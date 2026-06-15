@@ -1770,7 +1770,8 @@ body::before {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(30, 30, 60, 0.95), rgba(20, 20, 45, 0.98));
-  border: 1px solid rgba(255, 45, 146, 0.14);
+  border: 1px solid rgba
+  (255, 45, 146, 0.1);
 }
 
 .photo-viewer-frame img {
@@ -1837,7 +1838,7 @@ body::before {
   justify-content: space-between;
   gap: 12px;
   padding: calc(12px + var(--safe-top)) 16px 10px;
-  background: rgba(13, 13, 26, 0.85);
+  background: rgba(8, 8, 17, 0.85);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--glass-border);
@@ -1863,11 +1864,11 @@ body::before {
   min-height: 0;
 }
 
-/* ========== MODAL - NEON DARK GLASS ========== */
+/* ========== MODAL - NEON GLASS ========== */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 250;
@@ -1877,7 +1878,7 @@ body::before {
 }
 
 .modal-content {
-  background: linear-gradient(180deg, rgba(25, 25, 50, 0.94) 0%, rgba(15, 15, 35, 0.92) 100%);
+  background: linear-gradient(180deg, rgba(13,13,26,0.98) 0%, rgba(8,8,17,0.96) 100%);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   width: min(100%, 460px);
@@ -1886,9 +1887,9 @@ body::before {
   padding: 18px 16px 18px;
   overflow-y: auto;
   animation: slideUpModal 0.4s var(--ease-spring);
-  border: 1px solid rgba(255, 45, 146, 0.15);
+  border: 1px solid rgba(255,255,255,0.08);
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.4),
+    0 24px 60px rgba(0, 0, 0, 0.5),
     inset 0 1px 1px rgba(255,255,255,0.05);
 }
 
@@ -1906,9 +1907,9 @@ body::before {
 .profile-detail-photo-wrap {
   overflow: hidden;
   border-radius: 24px;
-  border: 1px solid rgba(255, 45, 146, 0.14);
-  background: linear-gradient(135deg, rgba(30, 30, 60, 0.98), rgba(20, 20, 45, 0.98));
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 45, 146, 0.15);
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
 }
 
 .profile-detail-photo-wrap img {
@@ -1929,9 +1930,9 @@ body::before {
   gap: 6px;
   border-radius: 999rem;
   padding: 6px 10px;
-  background: rgba(255, 45, 146, 0.1);
+  background: rgba(255, 45, 146, 0.08);
   color: var(--neon-pink);
-  border: 1px solid rgba(255, 45, 146, 0.2);
+  border: 1px solid rgba(255, 45, 146, 0.16);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.2px;
@@ -1983,9 +1984,9 @@ body::before {
 .muted-chip {
   padding: 6px 10px;
   border-radius: 999rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-secondary);
-  border: 1px solid rgba(255, 45, 146, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 12px;
   font-weight: 600;
 }
@@ -2001,7 +2002,7 @@ body::before {
   min-height: 58px;
   border-radius: 18px;
   padding: 12px 10px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
 }
 
 .profile-action-grid .action-btn:hover {
@@ -2015,7 +2016,7 @@ body::before {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--glass-border);
   color: var(--text-secondary);
   font-size: 18px;
@@ -2041,10 +2042,10 @@ body::before {
 }
 
 .like-notification-card {
-  background: var(--glass-bg);
+  background: var(--bg-card);
   backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  border-radius: var(--ios-radius);
+  border-radius: var(--radius);
   box-shadow: var(--glass-shadow);
   margin-bottom: 16px;
   display: grid;
@@ -2064,21 +2065,21 @@ body::before {
   left: 0;
   right: 0;
   height: 50%;
-  background: linear-gradient(180deg, rgba(255, 45, 146, 0.05) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
   pointer-events: none;
 }
 
 .like-notification-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255, 45, 146, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .like-notification-photo {
   width: 72px;
   height: 72px;
-  border-radius: var(--ios-radius);
+  border-radius: var(--radius);
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.06), rgba(0,0,0,0.2));
+  background: linear-gradient(135deg, rgba(184,41,247,0.06), rgba(0,0,0,0.2));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2113,7 +2114,7 @@ body::before {
 .like-notification-actions .like-btn,
 .like-notification-actions .reject-btn {
   flex: 1;
-  border-radius: var(--ios-radius);
+  border-radius: var(--radius);
   font-size: 14px;
   padding: 11px 0;
   font-weight: 700;
@@ -2123,9 +2124,9 @@ body::before {
 }
 
 .like-notification-actions .like-btn {
-  background: var(--gradient-love);
+  background: var(--gradient-pink);
   color: white;
-  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.3);
+  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.2);
 }
 
 .like-notification-actions .like-btn:active {
@@ -2133,7 +2134,7 @@ body::before {
 }
 
 .reject-btn {
-  background: var(--glass-bg);
+  background: var(--bg-glass-strong);
   color: var(--text-secondary);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(12px);
@@ -2150,10 +2151,10 @@ body::before {
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: var(--glass-bg);
+  background: var(--bg-card);
   backdrop-filter: blur(16px);
   margin: 0 16px 12px;
-  border-radius: var(--ios-radius);
+  border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   cursor: pointer;
@@ -2169,13 +2170,13 @@ body::before {
   left: 0;
   right: 0;
   height: 50%;
-  background: linear-gradient(180deg, rgba(255, 45, 146, 0.03) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
   pointer-events: none;
 }
 
 .chat-list-item:active {
   transform: scale(0.98);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .chat-list-photo {
@@ -2183,7 +2184,7 @@ body::before {
   height: 56px;
   border-radius: 50%;
   object-fit: cover;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.06), rgba(0,0,0,0.2));
+  background: linear-gradient(135deg, rgba(184,41,247,0.06), rgba(0,0,0,0.2));
   flex-shrink: 0;
   border: 2px solid var(--glass-border);
 }
@@ -2221,10 +2222,10 @@ body::before {
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: var(--glass-bg);
+  background: var(--bg-card);
   backdrop-filter: blur(16px);
   margin: 0 16px 12px;
-  border-radius: var(--ios-radius);
+  border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   animation: cardEnter 0.4s var(--ease-spring);
@@ -2239,7 +2240,7 @@ body::before {
   left: 0;
   right: 0;
   height: 50%;
-  background: linear-gradient(180deg, rgba(255, 45, 146, 0.03) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
   pointer-events: none;
 }
 
@@ -2248,7 +2249,7 @@ body::before {
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.06), rgba(0,0,0,0.2));
+  background: linear-gradient(135deg, rgba(184,41,247,0.06), rgba(0,0,0,0.2));
   flex-shrink: 0;
   border: 2px solid var(--glass-border);
 }
@@ -2283,9 +2284,9 @@ body::before {
 }
 
 .like-btn.accept {
-  background: var(--gradient-love);
+  background: var(--gradient-pink);
   color: white;
-  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.3);
+  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.2);
 }
 
 .like-btn.accept:active {
@@ -2293,7 +2294,7 @@ body::before {
 }
 
 .like-btn.reject {
-  background: var(--glass-bg);
+  background: var(--bg-glass-strong);
   color: var(--text-secondary);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(12px);
@@ -2304,7 +2305,7 @@ body::before {
   color: #FF453A;
 }
 
-/* ========== CHAT MODAL - NEON DARK GLASS ========== */
+/* ========== CHAT MODAL - NEON GLASS ========== */
 .chat-modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -2321,7 +2322,7 @@ body::before {
 }
 
 .chat-header {
-  background: rgba(13, 13, 26, 0.72);
+  background: rgba(8, 8, 17, 0.72);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   color: var(--text-primary);
@@ -2331,11 +2332,11 @@ body::before {
   gap: 12px;
   flex-shrink: 0;
   border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
 
 .chat-back {
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--glass-border);
   color: var(--neon-pink);
   width: 38px;
@@ -2366,7 +2367,7 @@ body::before {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.1), rgba(0,0,0,0.2));
+  background: linear-gradient(135deg, rgba(184,41,247,0.1), rgba(0,0,0,0.2));
   border: 2px solid var(--glass-border);
 }
 
@@ -2399,20 +2400,20 @@ body::before {
 
 .chat-bubble.me {
   align-self: flex-end;
-  background: var(--gradient-love);
+  background: var(--gradient-pink);
   color: white;
   border-bottom-right-radius: 6px;
-  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.3);
+  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.2);
 }
 
 .chat-bubble.them {
   align-self: flex-start;
-  background: var(--glass-bg);
+  background: var(--bg-card);
   backdrop-filter: blur(16px);
   color: var(--text-primary);
   border-bottom-left-radius: 6px;
   border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .chat-time {
@@ -2431,12 +2432,12 @@ body::before {
   max-width: 100%;
   overflow: hidden;
   padding: 10px 14px calc(10px + var(--safe-bottom));
-  background: rgba(13, 13, 26, 0.85);
+  background: rgba(8, 8, 17, 0.85);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-top: 1px solid var(--glass-border);
   flex-shrink: 0;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .chat-input-wrap {
@@ -2448,12 +2449,12 @@ body::before {
   width: 100%;
   min-width: 0;
   padding: 11px 16px;
-  border: 1.5px solid rgba(255, 45, 146, 0.18);
+  border: 1.5px solid rgba(255, 45, 146, 0.15);
   border-radius: 999rem;
   font-family: inherit;
   font-size: 15px;
   color: var(--text-primary);
-  background: rgba(30, 30, 60, 0.9);
+  background: rgba(255, 255, 255, 0.05);
   outline: none;
   transition: all 0.25s var(--ease-spring);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
@@ -2462,7 +2463,7 @@ body::before {
 #chat-input:focus {
   border-color: var(--neon-pink);
   box-shadow: 0 0 0 3px rgba(255, 45, 146, 0.1), inset 0 1px 2px rgba(0,0,0,0.2);
-  background: rgba(40, 40, 70, 0.95);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 #chat-input::placeholder {
@@ -2475,19 +2476,19 @@ body::before {
   height: 44px;
   border-radius: 50%;
   border: none;
-  background: var(--gradient-love);
+  background: var(--gradient-pink);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s var(--ease-spring);
-  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.4);
+  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.3);
 }
 
 .chat-send-btn:active {
   transform: scale(0.9);
-  box-shadow: 0 2px 8px rgba(255, 45, 146, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 45, 146, 0.2);
 }
 
 .chat-msg img {
@@ -2497,7 +2498,7 @@ body::before {
 
 .chat-msg img:hover {
   transform: scale(1.02);
-  box-shadow: 0 10px 28px rgba(255, 45, 146, 0.2);
+  box-shadow: 0 10px 28px rgba(255, 45, 146, 0.16);
 }
 
 .chat-emoji-btn, .chat-img-btn {
@@ -2506,7 +2507,7 @@ body::before {
   height: 38px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 45, 146, 0.08);
+  background: rgba(255,45,146,0.08);
   color: var(--neon-pink);
   display: flex;
   align-items: center;
@@ -2516,12 +2517,12 @@ body::before {
 }
 
 .chat-emoji-btn:active, .chat-img-btn:active {
-  background: rgba(255, 45, 146, 0.18);
+  background: rgba(255,45,146,0.18);
 }
 
 .emoji-panel {
-  background: var(--bg-card-solid);
-  border-top: 1px solid rgba(255, 45, 146, 0.1);
+  background: var(--bg-dark);
+  border-top: 1px solid var(--glass-border);
   padding: 8px;
 }
 
@@ -2542,14 +2543,14 @@ body::before {
 }
 
 .emoji-grid span:active {
-  background: rgba(255, 45, 146, 0.12);
+  background: rgba(255,45,146,0.12);
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 45, 146, 0.2); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 45, 146, 0.4); }
+::-webkit-scrollbar-thumb { background: rgba(255, 45, 146, 0.15); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 45, 146, 0.3); }
 
 /* Touch Devices */
 @media (hover: none) and (pointer: coarse) {
@@ -2566,11 +2567,11 @@ body::before {
 
 /* Selection Color */
 ::selection {
-  background: rgba(255, 45, 146, 0.3);
+  background: rgba(255, 45, 146, 0.2);
   color: var(--text-primary);
 }
 
-/* ========== TINDER CARD VIEW ========== */
+/* ========== TINDER CARD VIEW - NEON ========== */
 .swipe-container {
   position: relative;
   padding: 0;
@@ -2603,7 +2604,7 @@ body::before {
 .swipe-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--glass-border-strong);
+  background: rgba(255, 255, 255, 0.15);
   transition: all 0.3s;
 }
 .swipe-dot.active {
@@ -2615,7 +2616,7 @@ body::before {
 
 /* Big Tinder-style card - FULL SCREEN HEIGHT */
 .tinder-card {
-  background: var(--glass-bg);
+  background: rgba(13, 13, 26, 0.95);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
   border-radius: 24px;
@@ -2625,10 +2626,10 @@ body::before {
   min-height: calc(100vh - 140px);
   max-height: calc(100vh - 140px);
   margin: 0;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.4),
-    0 4px 16px rgba(0,0,0,0.2),
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(184, 41, 247, 0.1),
     inset 0 1px 1px rgba(255,255,255,0.05);
   overflow: hidden;
   position: relative;
@@ -2715,7 +2716,7 @@ body::before {
   flex: 1 1 0;
   min-height: 0;
   object-fit: cover;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.07), rgba(0,0,0,0.2));
+  background: linear-gradient(135deg, rgba(184,41,247,0.07), rgba(0,0,0,0.3));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2727,7 +2728,7 @@ body::before {
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  background: linear-gradient(135deg, rgba(30, 30, 60, 0.96), rgba(20, 20, 45, 0.98));
+  background: rgba(255, 255, 255, 0.02);
   position: absolute;
   inset: 0;
 }
@@ -2797,14 +2798,14 @@ body::before {
   border-radius: 999rem;
   font-size: 12px;
   font-weight: 600;
-  background: rgba(255, 45, 146, 0.1);
+  background: rgba(255,45,146,0.08);
   color: var(--neon-pink);
-  border: 1px solid rgba(255, 45, 146, 0.2);
+  border: 1px solid rgba(255,45,146,0.15);
 }
 .tinder-tag.tinder-tag-alt {
-  background: rgba(184, 41, 247, 0.1);
+  background: rgba(184,41,247,0.07);
   color: var(--neon-purple);
-  border-color: rgba(184, 41, 247, 0.2);
+  border-color: rgba(184,41,247,0.15);
 }
 
 /* 5 action buttons at bottom - FIXED AT BOTTOM */
@@ -2855,36 +2856,36 @@ body::before {
 
 .tinder-btn-nope {
   width: 56px; height: 56px;
-  background: linear-gradient(135deg, rgba(255,59,48,0.15), rgba(255,59,48,0.05));
-  border: 2px solid rgba(255,59,48,0.4);
-  box-shadow: 0 6px 24px rgba(255,59,48,0.2);
+  background: linear-gradient(135deg, rgba(255,59,48,0.1), rgba(255,59,48,0.04));
+  border: 2px solid rgba(255,59,48,0.3);
+  box-shadow: 0 6px 24px rgba(255,59,48,0.15);
   color: #FF3B30;
 }
 .tinder-btn-nope:active { transform: scale(0.88); box-shadow: 0 2px 8px rgba(255,59,48,0.1); }
 
 .tinder-btn-superlike {
   width: 52px; height: 52px;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.15), rgba(184, 41, 247, 0.1));
-  border: 2px solid rgba(255, 45, 146, 0.4);
-  box-shadow: 0 6px 24px rgba(255, 45, 146, 0.2);
+  background: linear-gradient(135deg, rgba(255,45,146,0.12), rgba(184,41,247,0.08));
+  border: 2px solid rgba(255,45,146,0.3);
+  box-shadow: 0 6px 24px rgba(255,45,146,0.15);
   color: var(--neon-pink);
 }
 
 .tinder-btn-like {
   width: 56px; height: 56px;
-  background: linear-gradient(135deg, rgba(76,217,100,0.15), rgba(76,217,100,0.05));
-  border: 2px solid rgba(76,217,100,0.4);
-  box-shadow: 0 6px 24px rgba(76,217,100,0.2);
+  background: linear-gradient(135deg, rgba(76,217,100,0.12), rgba(76,217,100,0.05));
+  border: 2px solid rgba(76,217,100,0.35);
+  box-shadow: 0 6px 24px rgba(76,217,100,0.15);
   color: #4CD964;
 }
 
 .tinder-btn-msg {
   width: 48px; height: 48px;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.15), rgba(184, 41, 247, 0.08));
-  border: 2px solid rgba(255, 45, 146, 0.3);
+  background: linear-gradient(135deg, rgba(184,41,247,0.12), rgba(184,41,247,0.05));
+  border: 2px solid rgba(184,41,247,0.25);
   font-size: 18px;
-  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.15);
-  color: var(--neon-pink);
+  box-shadow: 0 4px 16px rgba(184,41,247,0.12);
+  color: var(--neon-purple);
 }
 
 /* No more cards */
@@ -2911,24 +2912,24 @@ body::before {
 .no-more-btn {
   margin-top: 24px;
   padding: 14px 32px;
-  background: var(--gradient-love);
+  background: var(--gradient-pink);
   color: white;
   border: none;
   border-radius: 999rem;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(255, 45, 146, 0.3);
+  box-shadow: 0 8px 24px rgba(255,45,146,0.25);
   font-family: inherit;
   transition: all 0.3s var(--ease-spring);
 }
 .no-more-btn:active { transform: scale(0.96); }
 
-/* ===== STICKER MODAL ===== */
+/* ===== STICKER MODAL - NEON ===== */
 .sticker-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 500;
@@ -2940,13 +2941,13 @@ body::before {
 
 .sticker-sheet {
   width: 100%;
-  background: rgba(20, 20, 45, 0.96);
+  background: rgba(13,13,26,0.98);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-radius: 28px 28px 0 0;
   padding: 12px 20px calc(20px + var(--safe-bottom));
-  border-top: 1px solid rgba(255, 45, 146, 0.15);
-  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.3);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.4);
   animation: slideUpSheet 0.38s var(--ease-spring);
 }
 @keyframes slideUpSheet {
@@ -2977,7 +2978,7 @@ body::before {
 }
 
 .sticker-btn {
-  background: rgba(255, 45, 146, 0.04);
+  background: rgba(255,45,146,0.04);
   border: 1.5px solid var(--glass-border);
   border-radius: 16px;
   font-size: 30px;
@@ -2991,9 +2992,9 @@ body::before {
 }
 .sticker-btn:active {
   transform: scale(1.22);
-  background: rgba(255, 45, 146, 0.1);
+  background: rgba(255,45,146,0.1);
   border-color: var(--neon-pink);
-  box-shadow: 0 4px 16px rgba(255, 45, 146, 0.15);
+  box-shadow: 0 4px 16px rgba(255,45,146,0.12);
 }
 
 .sticker-close {
@@ -3001,8 +3002,8 @@ body::before {
   margin-top: 14px;
   padding: 13px;
   border: none;
-  border-radius: var(--ios-radius);
-  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.05);
   color: var(--text-secondary);
   font-size: 15px;
   font-weight: 700;
@@ -3010,7 +3011,7 @@ body::before {
   font-family: inherit;
   transition: all 0.2s;
 }
-.sticker-close:active { background: rgba(255,255,255,0.12); }
+.sticker-close:active { background: rgba(255,255,255,0.1); }
 
 /* Super Like flash */
 @keyframes superFlash {
@@ -3022,7 +3023,7 @@ body::before {
   animation: superFlash 0.5s ease;
 }
 
-/* ========== LIMIT STATUS BAR ========== */
+/* ========== LIMIT STATUS BAR - NEON ========== */
 .limit-status-bar {
   position: fixed;
   bottom: calc(80px + var(--safe-bottom));
@@ -3030,13 +3031,13 @@ body::before {
   transform: translateX(-50%);
   display: flex;
   gap: 12px;
-  background: rgba(20, 20, 45, 0.85);
+  background: rgba(13, 13, 26, 0.85);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
   border-radius: 999rem;
   padding: 8px 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   z-index: 90;
 }
 
@@ -3072,10 +3073,10 @@ body::before {
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: var(--glass-bg);
+  background: var(--bg-card);
   backdrop-filter: blur(16px);
   margin: 0 16px 12px;
-  border-radius: var(--ios-radius);
+  border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   cursor: pointer;
@@ -3091,7 +3092,7 @@ body::before {
   height: 56px;
   border-radius: 50%;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(255, 45, 146, 0.06), rgba(0,0,0,0.2));
+  background: linear-gradient(135deg, rgba(184,41,247,0.06), rgba(0,0,0,0.2));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3140,14 +3141,14 @@ body::before {
 
 .chat-msg-me {
   align-self: flex-end;
-  background: var(--gradient-love);
+  background: var(--gradient-pink);
   color: white;
   border-bottom-right-radius: 4px;
 }
 
 .chat-msg-them {
   align-self: flex-start;
-  background: var(--glass-bg);
+  background: var(--bg-card);
   backdrop-filter: blur(12px);
   color: var(--text-primary);
   border: 1px solid var(--glass-border);
@@ -3171,8 +3172,8 @@ body::before {
   overflow: hidden;
   margin: 8px auto 24px;
   border: 3px solid rgba(255, 45, 146, 0.2);
-  box-shadow: 0 12px 36px rgba(255, 45, 146, 0.2);
-  background: linear-gradient(135deg, rgba(30, 30, 60, 0.98), rgba(20, 20, 45, 0.98));
+  box-shadow: 0 12px 36px rgba(255, 45, 146, 0.15);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .minimal-photo-wrap img {
@@ -3204,8 +3205,8 @@ body::before {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: rgba(255, 45, 146, 0.1);
-  border: 1px solid rgba(255, 45, 146, 0.2);
+  background: rgba(255, 45, 146, 0.08);
+  border: 1px solid rgba(255, 45, 146, 0.18);
   border-radius: 999rem;
   font-size: 15px;
   font-weight: 700;
@@ -3228,7 +3229,7 @@ body::before {
   border: 1px solid var(--glass-border);
   border-radius: 18px;
   text-align: left;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .minimal-loc-icon {
@@ -3297,7 +3298,7 @@ body::before {
 .gender-male-btn.selected,
 .gender-male-btn:active {
   border-color: rgba(90, 200, 250, 0.55) !important;
-  background: linear-gradient(145deg, rgba(30, 40, 60, 0.98), rgba(20, 20, 45, 0.98)) !important;
+  background: rgba(90, 200, 250, 0.05) !important;
   box-shadow: 0 0 0 3px rgba(90, 200, 250, 0.18), 0 18px 30px rgba(90, 200, 250, 0.18), inset 0 1px 1px rgba(255,255,255,0.05) !important;
 }
 
@@ -3315,7 +3316,7 @@ body::before {
 .gender-female-btn.selected,
 .gender-female-btn:active {
   border-color: rgba(255, 110, 180, 0.55) !important;
-  background: linear-gradient(145deg, rgba(50, 30, 60, 0.98), rgba(20, 20, 45, 0.98)) !important;
+  background: rgba(255, 110, 180, 0.05) !important;
   box-shadow: 0 0 0 3px rgba(255, 110, 180, 0.18), 0 18px 30px rgba(255, 110, 180, 0.18), inset 0 1px 1px rgba(255,255,255,0.05) !important;
 }
 
@@ -3335,18 +3336,18 @@ body::before {
   -webkit-appearance: none;
   width: 100%;
   padding: 14px 44px 14px 18px;
-  border: 1.5px solid rgba(255, 45, 146, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23FF2D92' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 14px center,
-    linear-gradient(145deg, rgba(30, 30, 60, 0.96), rgba(20, 20, 45, 0.98));
+    rgba(255, 255, 255, 0.03);
   background-size: 20px, auto;
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255,255,255,0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255,255,255,0.05);
   transition: all 0.25s var(--ease-smooth);
   backdrop-filter: blur(12px);
 }
@@ -3357,7 +3358,7 @@ body::before {
   box-shadow: 0 0 0 3px rgba(255, 45, 146, 0.12), 0 12px 24px rgba(255, 45, 146, 0.1);
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23FF2D92' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 14px center,
-    linear-gradient(145deg, rgba(50, 30, 60, 0.98), rgba(30, 20, 45, 0.98));
+    rgba(255, 45, 146, 0.05);
   background-size: 20px, auto;
 }
 
@@ -3365,113 +3366,180 @@ body::before {
   font-weight: 600;
   font-size: 14px;
   padding: 10px;
-  background: var(--bg-card-solid);
+  background: var(--bg-dark);
   color: var(--text-primary);
 }
 
-/* ========== LOVEUZBOT BRANDING HEADER ========== */
-.love-brand {
-  display: flex;
+/* ========== ONLINE STATUS INDICATOR ========== */
+.online-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4CD964;
+  box-shadow: 0 0 8px rgba(76, 217, 100, 0.5);
+  display: inline-block;
+  margin-right: 6px;
+  position: relative;
+}
+
+.online-indicator::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(76, 217, 100, 0.3);
+  animation: onlinePulse 2s infinite;
+}
+
+@keyframes onlinePulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ========== VERIFIED BADGE ========== */
+.verified-badge {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 20px 16px 10px;
-  animation: brandGlow 3s ease-in-out infinite;
-}
-
-.love-brand-logo {
-  font-size: 28px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: white;
+  font-size: 10px;
   font-weight: 900;
-  background: var(--gradient-love);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -1px;
+  margin-left: 6px;
+  box-shadow: 0 0 8px rgba(184, 41, 247, 0.4);
 }
 
-.love-brand-sub {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  text-align: center;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
+/* ========== STORY RING (Instagram style) ========== */
+.story-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  padding: 3px;
+  background: var(--gradient-primary);
+  box-shadow: 0 0 15px rgba(184, 41, 247, 0.3);
 }
 
-@keyframes brandGlow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 45, 146, 0.3)); }
-  50% { filter: drop-shadow(0 0 16px rgba(184, 41, 247, 0.4)); }
+.story-ring img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bg-deep);
 }
 
-/* ========== HEART BEAT ANIMATION ========== */
-.heart-beat {
-  animation: heartBeat 1.5s ease-in-out infinite;
+/* ========== HEART EXPLOSION ANIMATION ========== */
+@keyframes heartExplosion {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.8; }
+  100% { transform: scale(2); opacity: 0; }
 }
 
-@keyframes heartBeat {
-  0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.15); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.15); }
-  70% { transform: scale(1); }
-}
-
-/* ========== SHIMMER EFFECT ========== */
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 45, 146, 0) 0%,
-    rgba(255, 45, 146, 0.1) 50%,
-    rgba(255, 45, 146, 0) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* ========== FLOATING PARTICLES ========== */
-.particle {
-  position: fixed;
+.heart-explosion {
+  position: absolute;
+  font-size: 60px;
+  animation: heartExplosion 0.8s ease-out forwards;
   pointer-events: none;
-  opacity: 0.3;
-  animation: particleFloat 20s linear infinite;
-  z-index: 1;
+  z-index: 100;
 }
 
-@keyframes particleFloat {
-  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.3; }
-  90% { opacity: 0.3; }
-  100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+/* ========== CONFETTI ========== */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--neon-pink);
+  animation: confettiFall 3s ease-out forwards;
+  pointer-events: none;
+  z-index: 999;
 }
 
-/* ========== RESPONSIVE ========== */
-@media (max-width: 380px) {
-  .header-title { font-size: 22px; }
-  .card { padding: 18px; margin: 12px 12px 0; }
-  .tinder-btn-back, .tinder-btn-msg { width: 42px; height: 42px; }
-  .tinder-btn-nope, .tinder-btn-like { width: 50px; height: 50px; }
-  .tinder-btn-superlike { width: 46px; height: 46px; }
+@keyframes confettiFall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-/* ========== SPECIAL EFFECTS ========== */
-.glow-text {
-  text-shadow: 0 0 10px var(--neon-pink-glow), 0 0 20px var(--neon-purple-glow);
+/* ========== TYPING INDICATOR ========== */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
 }
 
-.glow-border {
-  box-shadow: 0 0 15px rgba(255, 45, 146, 0.2), inset 0 0 15px rgba(255, 45, 146, 0.05);
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--neon-pink);
+  animation: typingBounce 1.4s infinite ease-in-out;
 }
 
-/* Love gradient text */
-.love-text {
-  background: var(--gradient-love);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
+.typing-indicator span:nth-child(1) { animation-delay: 0s; }
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-8px); }
+}
+
+/* ========== REACTION BUTTONS ========== */
+.reaction-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.reaction-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: scale(1.2);
+}
+
+.reaction-btn:active {
+  transform: scale(0.9);
+}
+
+/* ========== VOICE MESSAGE ========== */
+.voice-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border-radius: 18px;
+  border: 1px solid var(--glass-border);
+}
+
+.voice-wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 24px;
+}
+
+.voice-wave span {
+  width: 3px;
+  background: var(--neon-pink);
+  border-radius: 2px;
+  animation: voiceWave 1s infinite ease-in-out;
+}
+
+.voice-wave span:nth-child(1) { height: 8px; animation-delay: 0s; }
+.voice-wave span:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+.voice-wave span:nth-child(3) { height: 12px; animation-delay: 0.2s; }
+.voice-wave span:nth-child(4) { height: 20px; animation-delay: 0.3s; }
+.voice-wave span:nth-child(5) { height: 10px; animation-delay: 0.4s; }
+
+@keyframes voiceWave {
+  0%, 100% { opacity: 0.4; transform: scaleY(0.8); }
+  50% { opacity: 1; transform: scaleY(1); }
 }
