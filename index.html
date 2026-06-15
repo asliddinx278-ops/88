@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0D0D1A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>LoveUzBot - Tanishuv Boti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <base target="_blank" />
+<base target="_blank">
+</head>
+<body>
+<!-- FLOATING HEARTS EFFECT -->
+<div class="floating-hearts"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MATCH OVERLAY -->
+<div id="match-overlay" class="match-overlay" style="display:none;">
+  <div class="match-emoji">🎉</div>
+  <h2 class="match-title">Match!</h2>
+  <p class="match-sub">Endi muloqot boshlashingiz mumkin</p>
+  <button class="match-btn" onclick="closeMatchOverlay()">Ajoyib!</button>
+</div>
+
+<!-- PROFILE DETAIL MODAL -->
+<div id="profile-modal" class="modal-overlay" style="display:none;" onclick="closeProfileModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeProfileModal()">✕</button>
+    <div id="profile-modal-body"></div>
+  </div>
+</div>
+
+<div id="likes-modal" class="modal-overlay" style="display:none;" onclick="closeLikesModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeLikesModal()">✕</button>
+    <div id="likes-modal-body"></div>
+  </div>
+</div>
+
+<div id="search-results-modal" class="modal-overlay search-results-overlay" style="display:none;" onclick="closeSearchResultsModal(event)">
+  <div class="search-results-sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div>
+        <div class="sheet-title">Qidiruv natijalari</div>
+      </div>
+      <button class="modal-close" onclick="closeSearchResultsModal()">✕</button>
+    </div>
+    <div id="search-results-panel-body" class="search-results-panel-body"></div>
+  </div>
+</div>
+
+<div id="photo-viewer-modal" class="modal-overlay photo-viewer-overlay" style="display:none;" onclick="closePhotoViewer(event)">
+  <div class="photo-viewer-shell" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closePhotoViewer()">✕</button>
+    <div class="photo-viewer-frame">
+      <img id="photo-viewer-img" src="" alt="" />
+    </div>
+    <div class="photo-viewer-caption" id="photo-viewer-caption">Foto</div>
+  </div>
+</div>
+
+<!-- LIMIT EXCEEDED MODAL -->
+<div id="limit-modal" class="modal-overlay" style="display:none;" onclick="closeLimitModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeLimitModal()">✕</button>
+    <div style="text-align:center; margin-bottom:20px;">
+      <div style="font-size:48px; margin-bottom:12px;">⏳</div>
+      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;">Kunlik limit tugadi</h2>
+      <p style="color:var(--text-secondary); font-size:15px; line-height:1.5;" id="limit-modal-text">
+        Sizning kunlik limitingiz tugadi.
+      </p>
+    </div>
+    <div style="background:rgba(0,122,255,0.06); border:1px solid var(--glass-border); border-radius:16px; padding:16px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:var(--ios-blue);">📊 Kunlik limitlar:</div>
+      <div style="font-size:14px; color:var(--text-secondary); line-height:2;">
+        • Like: 25 ta<br>
+        • Xabar yuborish: 10 ta<br>
+        • Super Like: 10 ta
+      </div>
+    </div>
+    <div style="background:rgba(255,200,0,0.06); border:1px solid rgba(255,200,0,0.2); border-radius:16px; padding:16px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:#FF9500;">🎁 Limitni oshirish:</div>
+      <div style="font-size:14px; color:var(--text-secondary); line-height:2;">
+        • Guruhga 5 ta odam qo'shing → 1 hafta limitsiz<br>
+        • Guruhga 10 ta odam qo'shing → 1 oy limitsiz
+      </div>
+    </div>
+    <button class="btn-primary" onclick="openReferralModal()" style="width:100%; padding:16px; border-radius:999rem; margin-bottom:10px;">
+      <span>👥 Guruhga qo'shilish</span>
+    </button>
+    <div style="text-align:center;">
+      <button onclick="closeLimitModal()" style="background:none; border:none; color:var(--text-secondary); font-size:14px; cursor:pointer;">
+        Ertaga davom etish
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- REFERRAL MODAL (YANGILANGAN) -->
+<div id="referral-modal" class="modal-overlay" style="display:none;" onclick="closeReferralModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeReferralModal()">✕</button>
+    <div style="text-align:center; margin-bottom:20px;">
+      <div style="font-size:48px; margin-bottom:12px;">👥</div>
+      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;">Guruhga qo'shiling</h2>
+      <p style="color:var(--text-secondary); font-size:15px; line-height:1.5;">
+        Do'stlaringizni guruhga taklif qiling va limitsiz foydalanish imkoniyatiga ega bo'ling!
+      </p>
+    </div>
+    <div style="background:rgba(0,122,255,0.06); border:1px solid var(--glass-border); border-radius:16px; padding:16px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:var(--ios-blue);">🎁 Mukofotlar:</div>
+      <div style="font-size:14px; color:var(--text-secondary); line-height:2;">
+        • 5 ta do'st → 1 hafta limitsiz<br>
+        • 10 ta do'st → 1 oy limitsiz
+      </div>
+    </div>
+    <div id="referral-stats" style="font-size:14px; color:var(--text-secondary); margin-bottom:16px; text-align:center;"></div>
+    <div style="display:flex; gap:10px;">
+      <input type="text" id="referral-link-input" readonly style="flex:1; padding:14px 18px; border:1.5px solid rgba(0,122,255,0.18); border-radius:18px; font-size:14px; background:rgba(255,255,255,0.8);" />
+      <button onclick="copyReferralLink()" style="padding:14px 20px; background:var(--ios-blue); color:white; border:none; border-radius:18px; font-weight:600; cursor:pointer;">
+        Nusxa
+      </button>
+    </div>
+    <div style="margin-top:16px; text-align:center;">
+      <a id="referral-share-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:var(--ios-blue); font-size:14px; font-weight:600; text-decoration:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Telegramda ulashish
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT ROOM MODAL -->
+<div id="chat-modal" class="chat-modal" style="display:none;">
+  <div class="chat-header">
+    <button class="chat-back" onclick="closeChatRoom()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="chat-user-info">
+      <img id="chat-user-photo" src="" alt="" />
+      <span id="chat-user-name">User</span>
+    </div>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div id="emoji-panel" class="emoji-panel" style="display:none;">
+    <div class="emoji-grid">
+      <span onclick="insertEmoji('😊')">😊</span><span onclick="insertEmoji('😂')">😂</span><span onclick="insertEmoji('❤️')">❤️</span><span onclick="insertEmoji('🥰')">🥰</span><span onclick="insertEmoji('😍')">😍</span><span onclick="insertEmoji('🔥')">🔥</span>
+      <span onclick="insertEmoji('👋')">👋</span><span onclick="insertEmoji('👍')">👍</span><span onclick="insertEmoji('🙏')">🙏</span><span onclick="insertEmoji('😘')">😘</span><span onclick="insertEmoji('💋')">💋</span><span onclick="insertEmoji('🌹')">🌹</span>
+      <span onclick="insertEmoji('😎')">😎</span><span onclick="insertEmoji('🤔')">🤔</span><span onclick="insertEmoji('😅')">😅</span><span onclick="insertEmoji('😭')">😭</span><span onclick="insertEmoji('🥺')">🥺</span><span onclick="insertEmoji('😜')">😜</span>
+      <span onclick="insertEmoji('✨')">✨</span><span onclick="insertEmoji('🎉')">🎉</span><span onclick="insertEmoji('💯')">💯</span><span onclick="insertEmoji('😇')">😇</span><span onclick="insertEmoji('🤗')">🤗</span><span onclick="insertEmoji('💪')">💪</span>
+    </div>
+  </div>
+  <div class="chat-input-area">
+    <button class="chat-emoji-btn" onclick="toggleEmojiPanel()" title="Emoji">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+    </button>
+    <label class="chat-img-btn" title="Rasm yuborish">
+      <input type="file" accept="image/*" style="display:none;" onchange="sendImageMessage(this)" />
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    </label>
+    <div class="chat-input-wrap">
+      <input type="text" id="chat-input" placeholder="Xabar yozing..." maxlength="500" onkeypress="if(event.key==='Enter')sendChatMessage()" />
+    </div>
+    <button class="chat-send-btn" onclick="sendChatMessage()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+
+<!-- ======= PAGE: PROFILE ======= -->
+<div class="page" id="page-profile">
+  <div class="header">
+    <div class="header-title">
+      <span class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></span>
+      Anketa to'ldirish
+    </div>
+    <div class="header-sub">O'zingiz haqingizda ma'lumot bering</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Jins</div>
+    <div class="gender-selector">
+      <div class="gender-btn gender-male-btn" id="gender-erkak" onclick="selectGender('erkak')" title="Erkak">
+        <span class="g-icon g-icon-male">
+          <svg class="neon-gender-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="34" cy="38" r="18" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+            <line x1="47" y1="25" x2="66" y2="14" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+            <line x1="53" y1="14" x2="66" y2="14" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+            <line x1="66" y1="14" x2="66" y2="27" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="gender-label">Erkak</span>
+        <span class="gender-note">Jinsni tanlang</span>
+      </div>
+      <div class="gender-btn gender-female-btn" id="gender-ayol" onclick="selectGender('ayol')" title="Ayol">
+        <span class="g-icon g-icon-female">
+          <svg class="neon-gender-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="30" r="18" stroke="#FF6EB4" stroke-width="5" stroke-linecap="round"/>
+            <line x1="40" y1="48" x2="40" y2="66" stroke="#FF6EB4" stroke-width="5" stroke-linecap="round"/>
+            <line x1="28" y1="58" x2="52" y2="58" stroke="#FF6EB4" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="gender-label">Ayol</span>
+        <span class="gender-note">Jinsni tanlang</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Asosiy ma'lumotlar</div>
+    <div class="form-group">
+      <label class="form-label">Ismingiz</label>
+      <input class="form-input" id="inp-name" type="text" placeholder="To'liq ismingiz" maxlength="50" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Yoshingiz</label>
+      <input class="form-input" id="inp-age" type="number" placeholder="Masalan: 22" min="16" max="80" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Shahar / Tuman</label>
+      <input class="form-input" id="inp-city" type="text" placeholder="Yashash joyingiz" maxlength="80" oninput="suggestCity(this.value)" autocomplete="off" />
+      <div id="city-suggestions" class="suggestions-box" style="display:none;"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">O'zingiz haqingizda qisqacha</label>
+      <textarea class="form-input" id="inp-about" rows="3" maxlength="220" placeholder="Kim bo'lishni xohlaysiz, qiziqishlaringiz, o'zingiz haqingizda qisqacha ma'lumot..."></textarea>
+    </div>
+  </div>
+
+  <div class="card zodiac-card">
+    <div class="section-title">Burjingiz</div>
+    <div class="zodiac-shell">
+      <div class="zodiac-icon">♒</div>
+      <div class="zodiac-lead">
+        <div class="zodiac-title">Burjni tanlang</div>
+        <div class="zodiac-caption">Yaxshi moslik uchun burjingizni belgilang.</div>
+      </div>
+    </div>
+
+    <button type="button" class="zodiac-picker-toggle" id="zodiac-picker-toggle" onclick="toggleZodiacMenu()">
+      Burj tanlang...
+    </button>
+
+    <div class="zodiac-options" id="zodiac-options" style="display:none;">
+      <button type="button" class="zodiac-option" data-zodiac="Qo'y" onclick="selectZodiac('Qo\'y', '♈ Qo\'y')">♈ Qo'y</button>
+      <button type="button" class="zodiac-option" data-zodiac="Buzoq" onclick="selectZodiac('Buzoq', '♉ Buzoq')">♉ Buzoq</button>
+      <button type="button" class="zodiac-option" data-zodiac="Egizak" onclick="selectZodiac('Egizak', '♊ Egizak')">♊ Egizak</button>
+      <button type="button" class="zodiac-option" data-zodiac="Qisqichbaqa" onclick="selectZodiac('Qisqichbaqa', '♋ Qisqichbaqa')">♋ Qisqichbaqa</button>
+      <button type="button" class="zodiac-option" data-zodiac="Arslon" onclick="selectZodiac('Arslon', '♌ Arslon')">♌ Arslon</button>
+      <button type="button" class="zodiac-option" data-zodiac="Sunbula" onclick="selectZodiac('Sunbula', '♍ Sunbula')">♍ Sunbula</button>
+      <button type="button" class="zodiac-option" data-zodiac="Tarozi" onclick="selectZodiac('Tarozi', '♎ Tarozi')">♎ Tarozi</button>
+      <button type="button" class="zodiac-option" data-zodiac="Chayon" onclick="selectZodiac('Chayon', '♏ Chayon')">♏ Chayon</button>
+      <button type="button" class="zodiac-option" data-zodiac="O'qotar" onclick="selectZodiac('O\'qotar', '♐ O\'qotar')">♐ O'qotar</button>
+      <button type="button" class="zodiac-option" data-zodiac="Tog' echkisi" onclick="selectZodiac('Tog\' echkisi', '♑ Tog\' echkisi')">♑ Tog' echkisi</button>
+      <button type="button" class="zodiac-option" data-zodiac="Qovg'a" onclick="selectZodiac('Qovg\'a', '♒ Qovg\'a')">♒ Qovg'a</button>
+      <button type="button" class="zodiac-option" data-zodiac="Baliq" onclick="selectZodiac('Baliq', '♓ Baliq')">♓ Baliq</button>
+    </div>
+
+    <select class="form-select zodiac-select" id="sel-zodiac" style="display:none;">
+      <option value="">Tanlang...</option>
+      <option>Qo'y</option>
+      <option>Buzoq</option>
+      <option>Egizak</option>
+      <option>Qisqichbaqa</option>
+      <option>Arslon</option>
+      <option>Sunbula</option>
+      <option>Tarozi</option>
+      <option>Chayon</option>
+      <option>O'qotar</option>
+      <option>Tog' echkisi</option>
+      <option>Qovg'a</option>
+      <option>Baliq</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Qiziqishlar</div>
+    <div class="chips-wrap" id="interests-chips">
+      <div class="chip" onclick="toggleChip(this,'interests')">🍿 Kino</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🎵 Musiqa</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">📚 Kitob oʻqish</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🎮 Oʻyinlar</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🎭 Teatr</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🏛️ Muzeylar</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🎨 San'at</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">📸 Foto</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">📜 She'riyat</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">💃 Raqs</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">⚽ Sport</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🧘‍♂️ Yoga</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🚶‍♂️ Sayr</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🏓 Stol tennisi</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">✈️ Sayohat</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🏖️ Plyaj</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🛍️ Shopping</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">👗 Moda</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">☕ Qahva</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🍷 Vino</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🍺 Pivo</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">✍️ Blog yuritish</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">💻 Dasturlash</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">♟️ Shaxmat</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🎨 Rasm chizish</div>
+      <div class="chip" onclick="toggleChip(this,'interests')">🗣️ Tillar oʻrganish</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Maqsadingiz</div>
+    <div class="chips-wrap" id="goals-chips">
+      <div class="chip" onclick="toggleChip(this,'goals')">Do'stlik</div>
+      <div class="chip" onclick="toggleChip(this,'goals')">Tanishuv</div>
+      <div class="chip" onclick="toggleChip(this,'goals')">Oila</div>
+      <div class="chip" onclick="toggleChip(this,'goals')">Sevgi</div>
+      <div class="chip" onclick="toggleChip(this,'goals')">Romantika</div>
+      <div class="chip" onclick="toggleChip(this,'goals')">Uchrashuv</div>
+      <div class="chip" onclick="toggleChip(this,'goals')">Virtual muloqot</div>
+      <div class="chip" onclick="toggleChip(this,'goals')">Boshqa</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Fotosurat</div>
+    <div class="photo-upload" id="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+      <img id="photo-preview" alt="preview" />
+      <span class="upload-icon" id="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+      <span class="upload-text" id="upload-text">Rasm yuklash</span>
+      <span class="upload-sub" id="upload-sub">PNG, JPG • max 5MB</span>
+      <span class="upload-status" id="upload-status" aria-live="polite">Rasm yuklangandan so'ng saqlash mumkin.</span>
+    </div>
+    <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this)" />
+  </div>
+
+  <div style="padding: 16px;">
+    <div class="btn-primary-wrap">
+      <div class="btn-primary-shadow"></div>
+      <button id="save-profile-btn" class="btn-primary" onclick="saveProfile()" disabled>
+        <span><span class="btn-icon" style="display:inline-flex;vertical-align:middle;margin-right:6px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Anketani saqlash</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ======= PAGE: SEARCH (YANGILANGAN) ======= -->
+<div class="page active" id="page-search">
+  <div class="header">
+    <div>
+      <div class="header-title">
+        <span class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+        Qidirish
+      </div>
+      <div class="header-sub">Yangi do'stlar toping</div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="search-likes-btn" onclick="openIncomingLikesModal()" title="Sizga like yuborganlar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="icon-badge" id="search-likes-badge" style="display:none;">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Asosiy qidirish -->
+  <div class="card">
+    <div class="section-title">Qidirish</div>
+    <div class="form-group">
+      <label class="form-label">Ism bo'yicha</label>
+      <input class="form-input" id="sf-name" type="text" placeholder="Ism kiriting..." maxlength="50" />
+    </div>
+    <div class="section-title" style="margin-top:16px;">Jins</div>
+    <div class="gender-selector">
+      <div class="gender-btn gender-male-btn" id="sf-gender-erkak" onclick="selectSearchGender('erkak')" title="Erkak">
+        <span class="g-icon g-icon-male">
+          <svg class="neon-gender-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="34" cy="38" r="18" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+            <line x1="47" y1="25" x2="66" y2="14" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+            <line x1="53" y1="14" x2="66" y2="14" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+            <line x1="66" y1="14" x2="66" y2="27" stroke="#5AC8FA" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="gender-label">Erkak</span>
+        <span class="gender-note">Jins bo'yicha filtr</span>
+      </div>
+      <div class="gender-btn gender-female-btn" id="sf-gender-ayol" onclick="selectSearchGender('ayol')" title="Ayol">
+        <span class="g-icon g-icon-female">
+          <svg class="neon-gender-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="30" r="18" stroke="#FF6EB4" stroke-width="5" stroke-linecap="round"/>
+            <line x1="40" y1="48" x2="40" y2="66" stroke="#FF6EB4" stroke-width="5" stroke-linecap="round"/>
+            <line x1="28" y1="58" x2="52" y2="58" stroke="#FF6EB4" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="gender-label">Ayol</span>
+        <span class="gender-note">Jins bo'yicha filtr</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kengaytirilgan filtrlar (ixtiyoriy) -->
+  <div class="card" style="padding:16px;">
+    <button class="btn-secondary" onclick="toggleAdvancedFilters()" style="width:100%; justify-content:center;">
+      <span id="adv-filter-btn-text">🔍 Kengaytirilgan filtrlar</span>
+    </button>
+    <div id="advanced-filters" style="display:none; margin-top:16px;">
+      <div class="section-title">Yoshi</div>
+      <div class="age-range-wrap">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Dan</label>
+          <input class="form-input" id="sf-age-from" type="number" placeholder="16" min="16" max="80" />
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Gacha</label>
+          <input class="form-input" id="sf-age-to" type="number" placeholder="50" min="16" max="80" />
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:16px;">Shahar</div>
+      <input class="form-input" id="sf-city" type="text" placeholder="Shahar yoki tuman" maxlength="80" oninput="suggestCitySearch(this.value)" autocomplete="off" />
+      <div id="sf-city-suggestions" class="suggestions-box" style="display:none; margin-top:6px;"></div>
+      <div class="section-title" style="margin-top:16px;">Maqsad</div>
+      <div class="chips-wrap" id="sf-goals-chips">
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Do'stlik</div>
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Tanishuv</div>
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Oila</div>
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Sevgi</div>
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Romantika</div>
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Uchrashuv</div>
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Virtual muloqot</div>
+        <div class="chip" onclick="toggleChip(this,'sf-goals')">Boshqa</div>
+      </div>
+      <div class="section-title" style="margin-top:16px;">⭐ Burj bo'yicha qidirish</div>
+      <div class="zodiac-card" style="padding:14px; margin-bottom:10px;">
+        <div class="zodiac-shell" style="margin-bottom:10px;">
+          <div class="zodiac-icon">♒</div>
+          <div class="zodiac-lead">
+            <div class="zodiac-title" style="font-size:14px;">Burj tanlang</div>
+            <div class="zodiac-caption" style="font-size:12px;">Qidiruvda burj bo'yicha filtr qo'llang.</div>
+          </div>
+        </div>
+
+        <button type="button" class="zodiac-picker-toggle" id="sf-zodiac-toggle" onclick="toggleSearchZodiacMenu()">
+          Barcha burjlar
+        </button>
+
+        <div class="zodiac-options" id="sf-zodiac-options" style="display:none;">
+          <button type="button" class="zodiac-option" data-zodiac="" onclick="selectSearchZodiac('', 'Barcha burjlar')">📋 Barcha burjlar</button>
+          <button type="button" class="zodiac-option" data-zodiac="Qo'y" onclick="selectSearchZodiac('Qo\'y', '♈ Qo\'y')">♈ Qo'y</button>
+          <button type="button" class="zodiac-option" data-zodiac="Buzoq" onclick="selectSearchZodiac('Buzoq', '♉ Buzoq')">♉ Buzoq</button>
+          <button type="button" class="zodiac-option" data-zodiac="Egizak" onclick="selectSearchZodiac('Egizak', '♊ Egizak')">♊ Egizak</button>
+          <button type="button" class="zodiac-option" data-zodiac="Qisqichbaqa" onclick="selectSearchZodiac('Qisqichbaqa', '♋ Qisqichbaqa')">♋ Qisqichbaqa</button>
+          <button type="button" class="zodiac-option" data-zodiac="Arslon" onclick="selectSearchZodiac('Arslon', '♌ Arslon')">♌ Arslon</button>
+          <button type="button" class="zodiac-option" data-zodiac="Sunbula" onclick="selectSearchZodiac('Sunbula', '♍ Sunbula')">♍ Sunbula</button>
+          <button type="button" class="zodiac-option" data-zodiac="Tarozi" onclick="selectSearchZodiac('Tarozi', '♎ Tarozi')">♎ Tarozi</button>
+          <button type="button" class="zodiac-option" data-zodiac="Chayon" onclick="selectSearchZodiac('Chayon', '♏ Chayon')">♏ Chayon</button>
+          <button type="button" class="zodiac-option" data-zodiac="O'qotar" onclick="selectSearchZodiac('O\'qotar', '♐ O\'qotar')">♐ O'qotar</button>
+          <button type="button" class="zodiac-option" data-zodiac="Tog' echkisi" onclick="selectSearchZodiac('Tog\' echkisi', '♑ Tog\' echkisi')">♑ Tog' echkisi</button>
+          <button type="button" class="zodiac-option" data-zodiac="Qovg'a" onclick="selectSearchZodiac('Qovg\'a', '♒ Qovg\'a')">♒ Qovg'a</button>
+          <button type="button" class="zodiac-option" data-zodiac="Baliq" onclick="selectSearchZodiac('Baliq', '♓ Baliq')">♓ Baliq</button>
+        </div>
+
+        <select class="form-select zodiac-select" id="sf-zodiac" style="display:none;">
+          <option value="">Barcha burjlar</option>
+          <option value="Qo'y">Qo'y</option>
+          <option value="Buzoq">Buzoq</option>
+          <option value="Egizak">Egizak</option>
+          <option value="Qisqichbaqa">Qisqichbaqa</option>
+          <option value="Arslon">Arslon</option>
+          <option value="Sunbula">Sunbula</option>
+          <option value="Tarozi">Tarozi</option>
+          <option value="Chayon">Chayon</option>
+          <option value="O'qotar">O'qotar</option>
+          <option value="Tog' echkisi">Tog' echkisi</option>
+          <option value="Qovg'a">Qovg'a</option>
+          <option value="Baliq">Baliq</option>
+        </select>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;margin-bottom:14px;">
+        <input type="checkbox" id="sf-zodiac-compat" style="width:18px;height:18px;cursor:pointer;" />
+        <span>Faqat burjimga mos odamlarni ko'rsat ⭐</span>
+      </label>
+      <div class="section-title" style="margin-top:16px;">Qiziqishlar</div>
+      <div class="chips-wrap" id="sf-interests-chips">
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🍿 Kino</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🎵 Musiqa</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">📚 Kitob oʻqish</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🎮 Oʻyinlar</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🎭 Teatr</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🏛️ Muzeylar</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🎨 San'at</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">📸 Foto</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">� She'riyat</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">💃 Raqs</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">⚽ Sport</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🧘‍♂️ Yoga</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🚶‍♂️ Sayr</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🏓 Stol tennisi</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">✈️ Sayohat</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🏖️ Plyaj</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🛍️ Shopping</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">👗 Moda</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">☕ Qahva</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🍷 Vino</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🍺 Pivo</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">✍️ Blog yuritish</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">💻 Dasturlash</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">♟️ Shaxmat</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🎨 Rasm chizish</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">🗣️ Tillar oʻrganish</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 16px;">
+    <div class="btn-primary-wrap">
+      <div class="btn-primary-shadow"></div>
+      <button class="btn-primary" onclick="doSearch()">
+        <span><span class="btn-icon" style="display:inline-flex;vertical-align:middle;margin-right:6px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>Qidirish</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Qidiruv natijalari Tinder kartochkasida -->
+  <div id="search-results" style="display:none; width:100%;">
+    <div class="swipe-container" id="swipe-container" style="padding:0; width:100%;"></div>
+  </div>
+
+  <!-- Limit status indicator -->
+  <div id="limit-status-bar" class="limit-status-bar" style="display:none;">
+    <div class="limit-item" onclick="openReferralModal()">
+      <span class="limit-icon">❤️</span>
+      <span class="limit-text" id="limit-likes">25</span>
+    </div>
+    <div class="limit-item" onclick="openReferralModal()">
+      <span class="limit-icon">💬</span>
+      <span class="limit-text" id="limit-messages">25</span>
+    </div>
+    <div class="limit-item" onclick="openReferralModal()">
+      <span class="limit-icon">⭐</span>
+      <span class="limit-text" id="limit-superlikes">10</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ======= PAGE: CHATS ======= -->
+<div class="page" id="page-chats">
+  <div class="header">
+    <div class="header-title">
+      <span class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      Muloqot
+    </div>
+    <div class="header-sub">Like lar va suhbatingiz</div>
+  </div>
+
+  <div id="incoming-likes-section" style="display:none;">
+    <div class="section-title" style="margin: 16px 16px 8px;">💖 Sizga Like bosganlar</div>
+    <div id="incoming-likes-list"></div>
+  </div>
+
+  <div class="section-title" style="margin: 16px 16px 8px;">💬 Muloqotlar</div>
+  <div id="chat-list"></div>
+
+  <div id="chats-empty" class="empty-state" style="display:none;">
+    <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+    <h3>Hali suhbatingiz yo'q</h3>
+    <p>Qidirish bo'limidan yangi do'stlar toping va like bosing!</p>
+  </div>
+</div>
+
+
+<!-- ======= PAGE: MY PROFILE ======= -->
+<div class="page" id="page-myprofile">
+  <div class="header">
+    <div class="header-title">
+      <span class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      Mening anketam
+    </div>
+    <div class="header-sub">Profilingiz ma'lumotlari</div>
+  </div>
+  <div id="my-profile-content">
+    <div class="loading"><div class="spinner"></div> Yuklanmoqda...</div>
+  </div>
+  <div style="padding: 16px; padding-top: 8px;">
+    <button class="btn-secondary" onclick="showPage('profile')">
+      <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Anketani tahrirlash
+    </button>
+  </div>
+</div>
+
+
+<!-- ======= BOTTOM NAV ======= -->
+<nav class="bottom-nav" style="display:none;">
+  <button class="nav-btn" id="nav-search" onclick="showPage('search')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <span>Qidirish</span>
+  </button>
+  <button class="nav-btn" id="nav-chats" onclick="showPage('chats')" style="position:relative;">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span>Chat</span>
+    <span class="nav-badge" id="chat-badge" style="display:none;">0</span>
+  </button>
+  <button class="nav-btn" id="nav-myprofile" onclick="showPage('myprofile')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Profil</span>
+  </button>
+</nav>
+
+<!-- STICKER MODAL -->
+<div id="sticker-overlay" class="sticker-overlay" style="display:none;" onclick="closeStickerModal(event)">
+  <div class="sticker-sheet" onclick="event.stopPropagation()">
+    <div class="sticker-handle"></div>
+    <div class="sticker-title">⭐ Super Like — Sticker yuborish</div>
+    <div class="sticker-grid" id="sticker-grid"></div>
+    <button class="sticker-close" onclick="closeStickerModal()">Bekor qilish</button>
+  </div>
+</div>
+
+<!-- MESSAGE INPUT MODAL -->
+<div id="message-modal" class="modal-overlay" style="display:none;" onclick="closeMessageModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeMessageModal()">✕</button>
+    <div style="text-align:center; margin-bottom:20px;">
+      <div style="font-size:48px; margin-bottom:12px;">💬</div>
+      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;">Xabar yuborish</h2>
+      <p style="color:var(--text-secondary); font-size:15px; line-height:1.5;" id="message-modal-sub">
+        Foydalanuvchiga birinchi xabaringizni yozing.
+      </p>
+    </div>
+    <textarea id="first-message-input" placeholder="Salom! Qalaysiz?..." maxlength="500" style="width:100%; min-height:100px; padding:14px 18px; border:1.5px solid rgba(0,122,255,0.18); border-radius:18px; font-family:inherit; font-size:15px; resize:none; outline:none; margin-bottom:16px;"></textarea>
+    <button class="btn-primary" onclick="sendFirstMessage()" style="width:100%; padding:16px; border-radius:999rem;">
+      <span>📨 Xabar yuborish</span>
+    </button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
