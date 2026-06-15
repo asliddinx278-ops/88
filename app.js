@@ -2,8 +2,8 @@ const tg = window.Telegram?.WebApp;
 if (tg) {
   tg.ready();
   tg.expand();
-  try { tg.setHeaderColor('#0D0D1A'); } catch(e) {}
-  try { tg.setBackgroundColor('#0D0D1A'); } catch(e) {}
+  try { tg.setHeaderColor('#1A73E8'); } catch(e) {}
+  try { tg.setBackgroundColor('#F8FAFF'); } catch(e) {}
 }
 
 let userId = null;
@@ -35,7 +35,53 @@ if (tg?.initDataUnsafe?.user?.id) {
   }
 }
 
-const PROFILE_STORAGE_PREFIX = 'dating_profile_';
+// ========== BOT INSTANCE DETECTION ==========
+// Har bir bot alohida ishlashi uchun bot instance ID aniqlanadi
+// 1. URL query parameter: ?bot_instance=bot1
+// 2. Telegram initData'dan (agar server tomonidan qo'shilgan bo'lsa)
+// 3. Default: 'default'
+
+function getBotInstanceId() {
+  // URL'dan bot instance ID olish
+  const urlParams = new URLSearchParams(window.location.search);
+  const fromUrl = urlParams.get('bot_instance');
+  if (fromUrl) return fromUrl;
+
+  // Telegram WebApp initData'dan olish (agar server qo'shgan bo'lsa)
+  if (tg?.initDataUnsafe?.bot_instance) {
+    return tg.initDataUnsafe.bot_instance;
+  }
+
+  // localStorage'dan oldingi qiymatni olish
+  try {
+    const saved = localStorage.getItem('_bot_instance_id');
+    if (saved) return saved;
+  } catch (e) {}
+
+  return 'default';
+}
+
+const BOT_INSTANCE_ID = getBotInstanceId();
+
+// Bot instance ID ni saqlash (boshqa botlar bilan aralashmasligi uchun)
+try {
+  localStorage.setItem('_bot_instance_id', BOT_INSTANCE_ID);
+} catch (e) {}
+
+// API_BASE_URL - har bir bot uchun alohida backend URL
+// Muhim: Bu URL har bir bot deployment'ida o'zgarishi kerak!
+// 1-bot: https://bot1-backend.up.railway.app
+// 2-bot: https://bot2-backend.up.railway.app
+// 
+// Agar URL query parameter orqali berilgan bo'lsa:
+const urlApiBase = new URLSearchParams(window.location.search).get('api_base');
+const API_BASE_URL = urlApiBase || (window.location.hostname.includes('github.io') 
+  ? 'https://' + BOT_INSTANCE_ID + '-backend.up.railway.app'  // Default pattern
+  : window.location.origin);
+
+const DEFAULT_GROUP_INVITE_LINK = 'https://t.me/+HA4J8P7lht0zZTdi';
+
+const PROFILE_STORAGE_PREFIX = 'dating_profile_' + BOT_INSTANCE_ID + '_';
 
 function getProfileStorageKey(targetId = userId) {
   if (targetId && Number.isFinite(Number(targetId))) {
@@ -53,8 +99,7 @@ function removeLegacyProfileStorage() {
   }
 }
 
-const API_BASE_URL = 'https://tanishuvbot-production.up.railway.app';
-const DEFAULT_GROUP_INVITE_LINK = 'https://t.me/+HA4J8P7lht0zZTdi';
+
 
 const MAX_WEBAPP_DATA_SIZE = 6000;
 const MAX_INTERESTS_ALLOWED = 5;
