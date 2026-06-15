@@ -3,20 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0D0D1A" />
+  <meta name="theme-color" content="#080811" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>LoveUzBot - Tanishuv Boti</title>
+  <title>Do'stlik & Tanishuv</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    // Bot instance detection - URL query parameter or localStorage
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const botInstance = params.get('bot_instance') || localStorage.getItem('_bot_instance_id') || 'default';
+      window.__BOT_INSTANCE_ID = botInstance;
+      try { localStorage.setItem('_bot_instance_id', botInstance); } catch(e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="style.css" />
-  <base target="_blank" />
+  <base target="_blank">
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
-<!-- FLOATING HEARTS EFFECT -->
-<div class="floating-hearts"></div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -49,7 +57,7 @@
     <div class="sheet-handle"></div>
     <div class="sheet-header">
       <div>
-        <div class="sheet-title">Qidiruv natijalari</div>
+        <div class="sheet-title" style="font-size:20px;font-weight:800;color:var(--text-primary);">Qidiruv natijalari</div>
       </div>
       <button class="modal-close" onclick="closeSearchResultsModal()">✕</button>
     </div>
@@ -63,7 +71,7 @@
     <div class="photo-viewer-frame">
       <img id="photo-viewer-img" src="" alt="" />
     </div>
-    <div class="photo-viewer-caption" id="photo-viewer-caption">Foto</div>
+    <div class="photo-viewer-caption" id="photo-viewer-caption" style="color:var(--text-primary);">Foto</div>
   </div>
 </div>
 
@@ -73,21 +81,21 @@
     <button class="modal-close" onclick="closeLimitModal()">✕</button>
     <div style="text-align:center; margin-bottom:20px;">
       <div style="font-size:48px; margin-bottom:12px;">⏳</div>
-      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;">Kunlik limit tugadi</h2>
+      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px; color:var(--text-primary);">Kunlik limit tugadi</h2>
       <p style="color:var(--text-secondary); font-size:15px; line-height:1.5;" id="limit-modal-text">
         Sizning kunlik limitingiz tugadi.
       </p>
     </div>
-    <div style="background:rgba(0,122,255,0.06); border:1px solid var(--glass-border); border-radius:16px; padding:16px; margin-bottom:16px;">
-      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:var(--ios-blue);">📊 Kunlik limitlar:</div>
+    <div style="background:rgba(255,45,146,0.06); border:1px solid rgba(255,45,146,0.2); border-radius:16px; padding:16px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:var(--neon-pink);">📊 Kunlik limitlar:</div>
       <div style="font-size:14px; color:var(--text-secondary); line-height:2;">
         • Like: 25 ta<br>
         • Xabar yuborish: 10 ta<br>
         • Super Like: 10 ta
       </div>
     </div>
-    <div style="background:rgba(255,200,0,0.06); border:1px solid rgba(255,200,0,0.2); border-radius:16px; padding:16px; margin-bottom:16px;">
-      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:#FF9500;">🎁 Limitni oshirish:</div>
+    <div style="background:rgba(184,41,247,0.06); border:1px solid rgba(184,41,247,0.2); border-radius:16px; padding:16px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:var(--neon-purple);">🎁 Limitni oshirish:</div>
       <div style="font-size:14px; color:var(--text-secondary); line-height:2;">
         • Guruhga 5 ta odam qo'shing → 1 hafta limitsiz<br>
         • Guruhga 10 ta odam qo'shing → 1 oy limitsiz
@@ -105,19 +113,19 @@
 </div>
 
 
-<!-- REFERRAL MODAL (YANGILANGAN) -->
+<!-- REFERRAL MODAL -->
 <div id="referral-modal" class="modal-overlay" style="display:none;" onclick="closeReferralModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeReferralModal()">✕</button>
     <div style="text-align:center; margin-bottom:20px;">
       <div style="font-size:48px; margin-bottom:12px;">👥</div>
-      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;">Guruhga qo'shiling</h2>
+      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px; color:var(--text-primary);">Guruhga qo'shiling</h2>
       <p style="color:var(--text-secondary); font-size:15px; line-height:1.5;">
         Do'stlaringizni guruhga taklif qiling va limitsiz foydalanish imkoniyatiga ega bo'ling!
       </p>
     </div>
-    <div style="background:rgba(0,122,255,0.06); border:1px solid var(--glass-border); border-radius:16px; padding:16px; margin-bottom:16px;">
-      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:var(--ios-blue);">🎁 Mukofotlar:</div>
+    <div style="background:rgba(255,45,146,0.06); border:1px solid rgba(255,45,146,0.2); border-radius:16px; padding:16px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:15px; margin-bottom:10px; color:var(--neon-pink);">🎁 Mukofotlar:</div>
       <div style="font-size:14px; color:var(--text-secondary); line-height:2;">
         • 5 ta do'st → 1 hafta limitsiz<br>
         • 10 ta do'st → 1 oy limitsiz
@@ -125,13 +133,13 @@
     </div>
     <div id="referral-stats" style="font-size:14px; color:var(--text-secondary); margin-bottom:16px; text-align:center;"></div>
     <div style="display:flex; gap:10px;">
-      <input type="text" id="referral-link-input" readonly style="flex:1; padding:14px 18px; border:1.5px solid rgba(0,122,255,0.18); border-radius:18px; font-size:14px; background:rgba(255,255,255,0.8);" />
-      <button onclick="copyReferralLink()" style="padding:14px 20px; background:var(--ios-blue); color:white; border:none; border-radius:18px; font-weight:600; cursor:pointer;">
+      <input type="text" id="referral-link-input" readonly style="flex:1; padding:14px 18px; border:1.5px solid rgba(255,45,146,0.2); border-radius:18px; font-size:14px; background:rgba(255,255,255,0.03); color:var(--text-primary);" />
+      <button onclick="copyReferralLink()" style="padding:14px 20px; background:var(--gradient-pink); color:white; border:none; border-radius:18px; font-weight:600; cursor:pointer;">
         Nusxa
       </button>
     </div>
     <div style="margin-top:16px; text-align:center;">
-      <a id="referral-share-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:var(--ios-blue); font-size:14px; font-weight:600; text-decoration:none;">
+      <a id="referral-share-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:var(--neon-pink); font-size:14px; font-weight:600; text-decoration:none;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         Telegramda ulashish
       </a>
@@ -262,7 +270,7 @@
       <button type="button" class="zodiac-option" data-zodiac="Chayon" onclick="selectZodiac('Chayon', '♏ Chayon')">♏ Chayon</button>
       <button type="button" class="zodiac-option" data-zodiac="O'qotar" onclick="selectZodiac('O\'qotar', '♐ O\'qotar')">♐ O'qotar</button>
       <button type="button" class="zodiac-option" data-zodiac="Tog' echkisi" onclick="selectZodiac('Tog\' echkisi', '♑ Tog\' echkisi')">♑ Tog' echkisi</button>
-      <button type="button" class="zodiac-option" data-zodiac="Qovg'a" onclick="selectZodiac('Qovg\'a', '♒ Qovg\'a')">♒ Qovg'a</button>
+      <button type="button" class="zodiac-option" data-zodiac="Qovg'a" onclick="selectZodiac('Qovg\'a', '♒ Qovg\'a')">♒ Qovg\'a</button>
       <button type="button" class="zodiac-option" data-zodiac="Baliq" onclick="selectZodiac('Baliq', '♓ Baliq')">♓ Baliq</button>
     </div>
 
@@ -352,7 +360,7 @@
 </div>
 
 
-<!-- ======= PAGE: SEARCH (YANGILANGAN) ======= -->
+<!-- ======= PAGE: SEARCH ======= -->
 <div class="page active" id="page-search">
   <div class="header">
     <div>
@@ -405,7 +413,7 @@
     </div>
   </div>
 
-  <!-- Kengaytirilgan filtrlar (ixtiyoriy) -->
+  <!-- Kengaytirilgan filtrlar -->
   <div class="card" style="padding:16px;">
     <button class="btn-secondary" onclick="toggleAdvancedFilters()" style="width:100%; justify-content:center;">
       <span id="adv-filter-btn-text">🔍 Kengaytirilgan filtrlar</span>
@@ -452,7 +460,7 @@
 
         <div class="zodiac-options" id="sf-zodiac-options" style="display:none;">
           <button type="button" class="zodiac-option" data-zodiac="" onclick="selectSearchZodiac('', 'Barcha burjlar')">📋 Barcha burjlar</button>
-          <button type="button" class="zodiac-option" data-zodiac="Qo'y" onclick="selectSearchZodiac('Qo\'y', '♈ Qo\'y')">♈ Qo'y</button>
+          <button type="button" class="zodiac-option" data-zodiac="Qo'y" onclick="selectSearchZodiac('Qo\'y', '♈ Qo\'y')">♈ Qo\'y</button>
           <button type="button" class="zodiac-option" data-zodiac="Buzoq" onclick="selectSearchZodiac('Buzoq', '♉ Buzoq')">♉ Buzoq</button>
           <button type="button" class="zodiac-option" data-zodiac="Egizak" onclick="selectSearchZodiac('Egizak', '♊ Egizak')">♊ Egizak</button>
           <button type="button" class="zodiac-option" data-zodiac="Qisqichbaqa" onclick="selectSearchZodiac('Qisqichbaqa', '♋ Qisqichbaqa')">♋ Qisqichbaqa</button>
@@ -460,9 +468,9 @@
           <button type="button" class="zodiac-option" data-zodiac="Sunbula" onclick="selectSearchZodiac('Sunbula', '♍ Sunbula')">♍ Sunbula</button>
           <button type="button" class="zodiac-option" data-zodiac="Tarozi" onclick="selectSearchZodiac('Tarozi', '♎ Tarozi')">♎ Tarozi</button>
           <button type="button" class="zodiac-option" data-zodiac="Chayon" onclick="selectSearchZodiac('Chayon', '♏ Chayon')">♏ Chayon</button>
-          <button type="button" class="zodiac-option" data-zodiac="O'qotar" onclick="selectSearchZodiac('O\'qotar', '♐ O\'qotar')">♐ O'qotar</button>
-          <button type="button" class="zodiac-option" data-zodiac="Tog' echkisi" onclick="selectSearchZodiac('Tog\' echkisi', '♑ Tog\' echkisi')">♑ Tog' echkisi</button>
-          <button type="button" class="zodiac-option" data-zodiac="Qovg'a" onclick="selectSearchZodiac('Qovg\'a', '♒ Qovg\'a')">♒ Qovg'a</button>
+          <button type="button" class="zodiac-option" data-zodiac="O'qotar" onclick="selectSearchZodiac('O\'qotar', '♐ O\'qotar')">♐ O\'qotar</button>
+          <button type="button" class="zodiac-option" data-zodiac="Tog' echkisi" onclick="selectSearchZodiac('Tog\' echkisi', '♑ Tog\' echkisi')">♑ Tog\' echkisi</button>
+          <button type="button" class="zodiac-option" data-zodiac="Qovg'a" onclick="selectSearchZodiac('Qovg\'a', '♒ Qovg\'a')">♒ Qovg\'a</button>
           <button type="button" class="zodiac-option" data-zodiac="Baliq" onclick="selectSearchZodiac('Baliq', '♓ Baliq')">♓ Baliq</button>
         </div>
 
@@ -482,7 +490,7 @@
           <option value="Baliq">Baliq</option>
         </select>
       </div>
-      <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;margin-bottom:14px;">
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;margin-bottom:14px; color:var(--text-secondary);">
         <input type="checkbox" id="sf-zodiac-compat" style="width:18px;height:18px;cursor:pointer;" />
         <span>Faqat burjimga mos odamlarni ko'rsat ⭐</span>
       </label>
@@ -496,7 +504,7 @@
         <div class="chip" onclick="toggleChip(this,'sf-interests')">🏛️ Muzeylar</div>
         <div class="chip" onclick="toggleChip(this,'sf-interests')">🎨 San'at</div>
         <div class="chip" onclick="toggleChip(this,'sf-interests')">📸 Foto</div>
-        <div class="chip" onclick="toggleChip(this,'sf-interests')">� She'riyat</div>
+        <div class="chip" onclick="toggleChip(this,'sf-interests')">📜 She'riyat</div>
         <div class="chip" onclick="toggleChip(this,'sf-interests')">💃 Raqs</div>
         <div class="chip" onclick="toggleChip(this,'sf-interests')">⚽ Sport</div>
         <div class="chip" onclick="toggleChip(this,'sf-interests')">🧘‍♂️ Yoga</div>
@@ -629,12 +637,12 @@
     <button class="modal-close" onclick="closeMessageModal()">✕</button>
     <div style="text-align:center; margin-bottom:20px;">
       <div style="font-size:48px; margin-bottom:12px;">💬</div>
-      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;">Xabar yuborish</h2>
+      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px; color:var(--text-primary);">Xabar yuborish</h2>
       <p style="color:var(--text-secondary); font-size:15px; line-height:1.5;" id="message-modal-sub">
         Foydalanuvchiga birinchi xabaringizni yozing.
       </p>
     </div>
-    <textarea id="first-message-input" placeholder="Salom! Qalaysiz?..." maxlength="500" style="width:100%; min-height:100px; padding:14px 18px; border:1.5px solid rgba(0,122,255,0.18); border-radius:18px; font-family:inherit; font-size:15px; resize:none; outline:none; margin-bottom:16px;"></textarea>
+    <textarea id="first-message-input" placeholder="Salom! Qalaysiz?..." maxlength="500" style="width:100%; min-height:100px; padding:14px 18px; border:1.5px solid rgba(255,45,146,0.2); border-radius:18px; font-family:inherit; font-size:15px; resize:none; outline:none; margin-bottom:16px; background:rgba(255,255,255,0.03); color:var(--text-primary);"></textarea>
     <button class="btn-primary" onclick="sendFirstMessage()" style="width:100%; padding:16px; border-radius:999rem;">
       <span>📨 Xabar yuborish</span>
     </button>
