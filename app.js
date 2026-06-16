@@ -2114,13 +2114,36 @@ async function apiPost(endpoint, body) {
 }
 
 async function saveProfileToServer(profile, telegramId) {
-  const data = await apiPost('/api/save_profile', { telegram_id: telegramId, profile });
-  return data.success === true;
+  // ✅ TO'G'RILANDI: profile ichida telegram_id bo'lishini ta'minlash
+  const profileToSend = {
+    ...profile,
+    telegram_id: telegramId // har doim bo'lishi kerak
+  };
+  
+  const data = await apiPost('/api/save_profile', { 
+    telegram_id: telegramId, 
+    profile: profileToSend 
+  });
+  
+  if (data.success) {
+    // ✅ Serverdan qaytgandan keyin localStorage ni yangilash
+    setSavedProfile(profileToSend);
+    return true;
+  }
+  return false;
 }
 
 async function fetchUserProfile(telegramId) {
   const data = await apiPost('/api/profile', { telegram_id: telegramId });
-  return data.success ? data.user : null;
+  if (data.success && data.user) {
+    // ✅ Serverdan kelgan ma'lumotni localStorage ga saqlash
+    const user = data.user;
+    if (user.telegram_id === telegramId) {
+      setSavedProfile(user);
+      return user;
+    }
+  }
+  return null;
 }
 
 // === CITY SUGGEST ===
