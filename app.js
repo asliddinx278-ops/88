@@ -74,10 +74,7 @@ try {
 // 2-bot: https://bot2-backend.up.railway.app
 // 
 // Agar URL query parameter orqali berilgan bo'lsa:
-const urlApiBase = new URLSearchParams(window.location.search).get('api_base');
-const API_BASE_URL = urlApiBase || (window.location.hostname.includes('github.io') 
-  ? 'https://' + BOT_INSTANCE_ID + '-backend.up.railway.app'  // Default pattern
-  : window.location.origin);
+const API_BASE_URL = 'https://1-production-cc10.up.railway.app';
 
 const DEFAULT_GROUP_INVITE_LINK = 'https://t.me/+HA4J8P7lht0zZTdi';
 
