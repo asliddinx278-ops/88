@@ -87,9 +87,8 @@ function getProfileStorageKey(targetId = userId) {
   if (targetId && Number.isFinite(Number(targetId))) {
     return `${PROFILE_STORAGE_PREFIX}${Number(targetId)}`;
   }
-  // ⭐ FIX: User ID yo'q bo'lsa ham, umumiy "guest" key ishlatish
-  // (har safar yangi session emas, bitta umumiy guest key)
-  return `${PROFILE_STORAGE_PREFIX}guest_default`;
+  // Guest users get a unique session-based key so they don't share data
+  return `${PROFILE_STORAGE_PREFIX}guest_${getSessionId()}`;
 }
 
 function removeLegacyProfileStorage() {
@@ -476,11 +475,6 @@ async function decrementLocalLimit(type) {
 function populateProfileForm(profile) {
   if (!profile) return;
 
-  // ⭐ FIX: telegram_id ni yangilash
-  if (userId && !profile.telegram_id) {
-    profile.telegram_id = userId;
-  }
-
   // Set gender
   if (profile.gender) {
     selectGender(profile.gender);
@@ -615,14 +609,22 @@ function showPage(name) {
   if (name === 'myprofile') loadMyProfile();
   if (name === 'chats') loadChats();
   if (name === 'profile') {
-    // ⭐ FIX: Avval localStorage'dan profilni tekshirish
+    // CRITICAL: Reset form state when entering profile page
+    // so previous user's data doesn't appear
+    resetProfileFormState();
+    // Then load existing profile if available for CURRENT user
     const existing = getProfile();
     if (existing) {
-      // Profil bor - uni shakllantirish
       populateProfileForm(existing);
-    } else {
-      // Profil yo'q - formani tozalash
-      resetProfileFormState();
+    } else if (userId) {
+      // localStorage'da yo'q bo'lsa, serverdan qayta yuklab olamiz
+      fetchUserProfile(userId).then(user => {
+        if (user) {
+          if (!user.telegram_id) user.telegram_id = userId;
+          setSavedProfile(user);
+          populateProfileForm(user);
+        }
+      });
     }
   }
 
@@ -1152,7 +1154,7 @@ async function saveProfile() {
   }
 
   const profile = {
-    telegram_id: userId || null,  // ⭐ MUHIM: telegram_id saqlash
+    telegram_id: userId || null,
     gender: selectedGender,
     full_name: name,
     age: age,
@@ -2030,25 +2032,7 @@ function isRegistered() {
 }
 
 function getProfile() {
-  // ⭐ FIX: Avval userId bo'yicha qidirish
-  if (userId) {
-    const userKey = getProfileStorageKey(userId);
-    const userData = localStorage.getItem(userKey);
-    if (userData) {
-      try {
-        const profile = JSON.parse(userData);
-        // ⭐ telegram_id ni yangilash agar yo'q bo'lsa
-        if (!profile.telegram_id) {
-          profile.telegram_id = userId;
-        }
-        return profile;
-      } catch (e) {
-        console.warn('Profile cache parse failed', e);
-      }
-    }
-  }
-
-  // Guest key bo'yicha qidirish
+  // ALWAYS read from storage — never use a global cache that could leak between users
   const storageKey = getProfileStorageKey();
   const data = localStorage.getItem(storageKey);
   if (data) {
@@ -2423,44 +2407,28 @@ function closePhotoViewer(e) {
 document.addEventListener('DOMContentLoaded', () => {
   removeLegacyProfileStorage();
 
-  // ⭐ FIX: Avval localStorage'dan profilni tekshirish
-  const localProfile = getProfile();
+  // CRITICAL: Don't restore photo state until we know who the user is
+  // This prevents cross-user photo leakage
 
+  // Check if user has profile
   if (userId) {
-    // Telegram user - serverdan profilni tekshirish
     fetchUserProfile(userId).then(user => {
       if (user) {
-        // Serverda profil bor - uni saqlash va ko'rsatish
+        // Ensure telegram_id is always saved with profile for correct localStorage key
+        if (!user.telegram_id) user.telegram_id = userId;
         setSavedProfile(user);
         document.querySelector('.bottom-nav').style.display = 'flex';
         showPage('search');
         loadLimitStatus();
-      } else if (localProfile && localProfile.telegram_id == userId) {
-        // ⭐ FIX: Serverda yo'q, lekin localStorage'da bor va telegram_id mos keladi
-        // Bu localStorage'dan serverga yuklash uchun
-        showToast('Profil localStorage\'dan topildi, serverga yuklanmoqda...');
-        saveProfileToServer(localProfile, userId).then(saved => {
-          if (saved) {
-            setSavedProfile({...localProfile, telegram_id: userId});
-            showToast('Profil serverga yuklandi!');
-          }
-        });
-        document.querySelector('.bottom-nav').style.display = 'flex';
-        showPage('search');
       } else {
-        // Profil umuman yo'q - anketa to'ldirish
+        // No profile on server — clear any local data that might be from another user
         resetProfileFormState();
         showPage('profile');
       }
     });
-  } else if (localProfile) {
-    // ⭐ FIX: User ID yo'q, lekin localStorage'da profil bor (guest mode)
-    // Profilni shakllantirish
-    populateProfileForm(localProfile);
-    document.querySelector('.bottom-nav').style.display = 'flex';
-    showPage('search');
   } else {
-    // Umuman profil yo'q
+    // No userId detected — this is a fresh/guest session
+    // Clear any stale data and show profile page
     resetProfileFormState();
     showPage('profile');
   }
