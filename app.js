@@ -1148,15 +1148,14 @@ async function saveProfile() {
   if (!city) { showToast('Shahar/tuman kiriting!'); return; }
   if (selectedGoals.length === 0) { showToast('Kamida 1 ta maqsad tanlang!'); return; }
 
-  if (!userId) {
-    showToast('Xatolik: Telegram ID aniqlanmadi. Web Appni Telegram ichida oching.');
-    return;
+  const trimmedInterests = Array.from(new Set((selectedInterests || []).filter(Boolean))).slice(0, MAX_INTERESTS_ALLOWED);
+  if ((selectedInterests || []).length > MAX_INTERESTS_ALLOWED) {
+    showToast('Maksimal 5 ta qiziqish tanlash mumkin.');
   }
 
-  const trimmedInterests = Array.from(new Set((selectedInterests || []).filter(Boolean))).slice(0, MAX_INTERESTS_ALLOWED);
-
+  // ✅ TO'G'RILANDI: telegram_id ni profile ichiga qo'shish
   const profile = {
-    telegram_id: userId,
+    telegram_id: userId, // ✅ MUHIM!
     gender: selectedGender,
     full_name: name,
     age: age,
@@ -1168,27 +1167,26 @@ async function saveProfile() {
     photo_base64: photoBase64 || null
   };
 
-  const saveBtn = document.getElementById('save-profile-btn');
-  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saqlanmoqda...'; }
-
-  const serverSaved = await saveProfileToServer(profile, userId);
-
-  if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Saqlash'; }
-
-  if (!serverSaved) {
-    showToast('❌ Server xatolik! Internet aloqasini tekshiring va qayta urinib ko\'ring.');
-    return;
+  // ✅ TO'G'RILANDI: avval serverga saqlash, keyin localStorage
+  let serverSaved = false;
+  if (userId) {
+    serverSaved = await saveProfileToServer(profile, userId);
+    if (serverSaved) {
+      // ✅ Serverdan tasdiq kelganda localStorage ga saqlash
+      setSavedProfile(profile);
+    }
+  } else {
+    // Guest user - faqat localStorage
+    setSavedProfile(profile);
   }
-
-  // Serverga saqlangandan keyin localStorage ni ham yangilash (cache uchun)
-  setSavedProfile(profile);
 
   if (tg) {
     sendWebAppData({ action: 'save_profile', profile });
   }
 
   setDefaultSearchGender();
-  showToast('✅ Anketa muvaffaqiyatli saqlandi!');
+  showToast(serverSaved ? 'Anketa muvaffaqiyatli saqlandi!' : 'Anketa mahalliy saqlandi.');
+
   document.querySelector('.bottom-nav').style.display = 'flex';
   showPage('search');
 }
@@ -2041,42 +2039,43 @@ function isRegistered() {
 }
 
 function getProfile() {
-  // ALWAYS read from storage — never use a global cache that could leak between users
-  const storageKey = getProfileStorageKey();
+  // ✅ TO'G'RILANDI: faqat joriy userId bo'yicha o'qish, legacy fallback olib tashlandi
+  if (!userId) return null;
+  
+  const storageKey = getProfileStorageKey(userId);
   const data = localStorage.getItem(storageKey);
+  
   if (data) {
     try {
-      return JSON.parse(data);
+      const profile = JSON.parse(data);
+      // ✅ Tekshirish: bu profil haqiqatan ham joriy foydalanuvchigimi
+      if (profile.telegram_id === userId) {
+        return profile;
+      } else {
+        // Noto'g'ri foydalanuvchining ma'lumoti - o'chirish
+        localStorage.removeItem(storageKey);
+        return null;
+      }
     } catch (e) {
       console.warn('Profile cache parse failed', e);
+      localStorage.removeItem(storageKey);
+      return null;
     }
   }
-
-  // Legacy fallback for older browsers/devices.
-  const legacyData = localStorage.getItem('dating_profile');
-  if (legacyData) {
-    try {
-      const parsed = JSON.parse(legacyData);
-      return parsed;
-    } catch (e) {
-      console.warn('Legacy profile cache parse failed', e);
-    }
-  }
-
+  
   return null;
 }
 
 function setSavedProfile(profile) {
-  // REMOVED: savedProfile = profile; — no global cache
-
-  if (profile) {
-    const storageKey = getProfileStorageKey(profile.telegram_id || userId);
+  if (profile && profile.telegram_id) {
+    // ✅ TO'G'RILANDI: faqat to'liq profile saqlash
+    const storageKey = getProfileStorageKey(profile.telegram_id);
     localStorage.setItem(storageKey, JSON.stringify(profile));
-    removeLegacyProfileStorage();
-  } else {
-    const storageKey = getProfileStorageKey();
-    localStorage.removeItem(storageKey);
-    removeLegacyProfileStorage();
+  } else if (profile && userId) {
+    // Agar profile da telegram_id yo'q bo'lsa, qo'shib saqlash
+    profile.telegram_id = userId;
+    const storageKey = getProfileStorageKey(userId);
+    localStorage.setItem(storageKey, JSON.stringify(profile));
   }
 }
 
@@ -2416,37 +2415,45 @@ function closePhotoViewer(e) {
 document.addEventListener('DOMContentLoaded', () => {
   removeLegacyProfileStorage();
 
+  // ✅ TO'G'RILANDI: avval serverdan tekshirish, keyin localStorage
   if (userId) {
     fetchUserProfile(userId).then(user => {
       if (user) {
-        if (!user.telegram_id) user.telegram_id = userId;
+        // ✅ Serverdan ma'lumot keldi - localStorage ga saqlash
         setSavedProfile(user);
         document.querySelector('.bottom-nav').style.display = 'flex';
         showPage('search');
         loadLimitStatus();
       } else {
-        // Serverda profil yo'q — anketa to'ldirish sahifasini ko'rsat
-        // localStorage ga TAYANMAYMIZ — server haqiqat manba
-        resetProfileFormState();
-        document.querySelector('.bottom-nav').style.display = 'none';
-        showPage('profile');
-      }
-    }).catch(() => {
-      // Server bilan aloqa yo'q — localStorage dan fallback
-      const cached = getProfile();
-      if (cached) {
-        document.querySelector('.bottom-nav').style.display = 'flex';
-        showPage('search');
-        loadLimitStatus();
-      } else {
-        resetProfileFormState();
-        document.querySelector('.bottom-nav').style.display = 'none';
-        showPage('profile');
+        // Serverda profil yo'q - localStorage ni tekshirish
+        const localProfile = getProfile();
+        if (localProfile) {
+          // LocalStorage da bor - serverga qayta yuborishga harakat
+          saveProfileToServer(localProfile, userId).then(saved => {
+            if (saved) {
+              document.querySelector('.bottom-nav').style.display = 'flex';
+              showPage('search');
+            } else {
+              // Serverga yuborilmadi - formani to'ldirish kerak
+              resetProfileFormState();
+              showPage('profile');
+            }
+          });
+        } else {
+          // Hech yerda yo'q - formani to'ldirish
+          resetProfileFormState();
+          showPage('profile');
+        }
       }
     });
   } else {
-    resetProfileFormState();
-    document.querySelector('.bottom-nav').style.display = 'none';
-    showPage('profile');
+    // No userId - guest mode
+    const localProfile = getProfile();
+    if (localProfile) {
+      showPage('search');
+    } else {
+      resetProfileFormState();
+      showPage('profile');
+    }
   }
 });
